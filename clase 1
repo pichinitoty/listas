@@ -1,0 +1,106 @@
+typedef struct{
+int edad;
+char nombre[20];
+}Persona;
+
+
+typedef struct{
+    Persona personita;
+    struct nodo * siguiente;
+}nodo;
+
+void cargarArchivo();
+nodo *crearnodo(Persona personita);
+void cargarnodo (nodo * lista, nodo* nuevo);
+void mostrarLista (nodo*lista, nodo * nuevo);
+nodo* buscarUltimo(nodo*lista);
+
+int main()
+{
+Persona personita;
+//cargarArchivo();
+
+nodo * lista;
+lista = crearnodo(personita);
+nodo*nuevo;
+cargarnodo(lista, nuevo);
+mostrarLista(lista, nuevo);
+buscarUltimo(lista);
+
+
+return 0;
+}
+
+
+void cargarArchivo(){
+
+char continuar = 's';
+
+Persona persona;
+FILE *archi;
+archi = fopen("persona.bin", "ab");
+
+    if (archi!=NULL){
+        do{
+            printf("ingrese la edad\n");
+            fflush(stdin);
+            scanf("%i",&persona.edad);
+            printf("ingrese su nombre\n");
+            fflush(stdin);
+            scanf("%s", &persona.nombre);
+
+            fwrite(&persona, sizeof(Persona),1,archi);
+
+            printf("ingrese 's' si desea continuar\n");
+            fflush(stdin);
+            scanf("%c", &continuar);
+        }while(continuar == 's');
+    }
+    fclose(archi);
+}
+
+nodo * crearnodo(Persona personita){
+nodo * aux =(nodo*) malloc(sizeof(nodo));
+aux->personita = personita;
+
+aux->siguiente = NULL;
+
+return aux;
+}
+void cargarnodo (nodo * lista, nodo*nuevo){
+
+printf("ingrese una edad\n");
+scanf("%i", &lista->personita.edad);
+printf("ingrese una edad\n");
+scanf("%i", &nuevo->personita.edad);
+
+}
+
+void mostrarLista (nodo*lista, nodo*nuevo){
+printf("%i\n", lista->personita.edad);
+printf("%i\n", nuevo->personita.edad);
+}
+
+nodo * agregarPrimero (nodo*lista, nodo*nuevo){
+if (lista == NULL){
+    lista = nuevo;
+}
+    else
+    {
+        nuevo->siguiente =lista;
+        lista = nuevo;
+    }
+
+}
+
+nodo* buscarUltimo(nodo*lista){
+
+nodo * seg = lista;
+if(seg !=NULL){
+    while(seg->siguiente!=NULL){
+        seg=seg->siguiente;
+    }
+}
+printf("%p\n", seg);
+return seg;
+}
